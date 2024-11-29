@@ -70,6 +70,8 @@ int handle_token(int token) {
 int { return handle_token( INT);}
 void { return handle_token( VOID);}
 return { return handle_token(RETURN);}
+if {return handle_token(IF);}
+else {return handle_token(ELSE);}
 [a-zA-Z_][a-zA-Z_0-9]* { return handle_token( Ident);}
 [0-9]+ { return handle_token( IntConst);}
 "+" { return handle_token( ADD);}
@@ -82,6 +84,17 @@ return { return handle_token(RETURN);}
 "{" { return handle_token( LBRACE); }
 "}" { return handle_token( RBRACE);}
 ";" { return handle_token( SEMICOLON); }
+"=" { return handle_token(ASSIGN);}
+"==" {return handle_token(EQUAL);}
+"," { return handle_token( COMMA); }
+"<=" {return handle_token(LESS_EQUAL);}
+">=" {return handle_token(GREATER_EQUAL);}
+">" {return handle_token(GREATER);}
+"<" {return handle_token(LESS);}
+"!=" {return handle_token(NOT_EQUAL);}
+"!" {return handle_token(NOT);}
+"&&" {return handle_token(AND);}
+"||" {return handle_token(OR);}
 
 \n {
     line_number++;
