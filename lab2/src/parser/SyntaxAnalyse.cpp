@@ -165,15 +165,14 @@ void SynataxAnalyseLval(ast::lval_syntax *&self, char *ident)
 void SynataxAnalyseStmtIf(ast::stmt_syntax *&self, ast::expr_syntax *cond, ast::stmt_syntax *then_body, ast::stmt_syntax *else_body)
 {
     auto syntax = new ast::if_stmt_syntax;
-    //if exist else
-    if (else_body) {
-        syntax->pred = std::shared_ptr<ast::expr_syntax>(cond);
-        syntax->then_body = std::shared_ptr<ast::stmt_syntax>(then_body);
+
+    syntax->pred = std::shared_ptr<ast::expr_syntax>(cond);
+    syntax->then_body = std::shared_ptr<ast::stmt_syntax>(then_body);
+
+    if(else_body) {
         syntax->else_body = std::shared_ptr<ast::stmt_syntax>(else_body);
-    } else {
-        syntax->pred = std::shared_ptr<ast::expr_syntax>(cond);
-        syntax->then_body = std::shared_ptr<ast::stmt_syntax>(then_body);
     }
+
     self = static_cast<ast::stmt_syntax*>(syntax);
 }
 
@@ -198,9 +197,13 @@ void SynataxAnalyseLAndExp(ast::expr_syntax *&self, ast::expr_syntax *cond1, ast
 
 void SynataxAnalyseEqExp(ast::expr_syntax *&self, ast::expr_syntax *cond1, char *op, ast::expr_syntax *cond2)
 {
-    auto syntax = new ast::logic_cond_syntax;
+    auto syntax = new ast::rel_cond_syntax;
     syntax->lhs = std::shared_ptr<ast::expr_syntax>(cond1);
-    syntax->op = relop::equal;
+    if(!strcmp(op, "==")) {
+        syntax->op = relop::equal;
+    } else if(!strcmp(op, "!=")) {
+        syntax->op = relop::non_equal;
+    }
     syntax->rhs = std::shared_ptr<ast::expr_syntax>(cond2);
     self = static_cast<ast::expr_syntax*>(syntax);
 
